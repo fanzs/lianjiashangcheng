@@ -1,5 +1,7 @@
 package com.fanzs.config;
 
+import com.qiniu.common.Zone;
+import com.qiniu.storage.UploadManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -54,4 +56,23 @@ public class WebUploadConfig {
         multipartResolver.setResolveLazily(this.multipartProperties.isResolveLazily());
         return multipartResolver;
     }
+    /**
+    * 七牛
+    *  华南
+    */
+    @Bean
+    public com.qiniu.storage.Configuration qiniuConfig(){
+        return new com.qiniu.storage.Configuration(Zone.zone0());
+    }
+
+    /**
+     * 七牛上传工具实例
+     * @return
+     */
+    @Bean
+    public UploadManager uploadManager(){
+        return new UploadManager(qiniuConfig());
+    }
 }
+
+
